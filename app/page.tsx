@@ -1,101 +1,82 @@
-import Image from "next/image";
+import AboutSection from "./comps/Home/aboutSection";
+import { CaseStudies } from "./comps/Home/caseStudiesSection";
+import ServiceSection from "./comps/Home/serviceSection";
+import SocialProof from "./comps/Home/socialProof";
+import WhyChooseUs from "./comps/Home/whyChooseUsSection";
+import WinterSchool from "./comps/Home/winterSchoolSection";
+import TestimonialSection from "./comps/Home/testimonialSection";
+import GetInTouch from "./comps/GetInTouch";
+import HeroSlider from "./comps/Home/heroSlider";
+import { SliderContent } from "./comps/Home/sliderContent"; // Import SliderContent
+
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  // Define slide data
+  const slidesData = [
+    {
+      id: '1',
+      heading: "Saving you time and money through industrial automation.",
+      paragraph: "Streamline operations, reduce costs, and revolutionize your industrial processes with our advanced automation solutions, carefully designed to significantly enhance efficiency, productivity, and overall performance, while minimizing errors and maximizing results.",
+      image1Url: "/PlaceholderImage.png", // Placeholder for top-right image
+      image2Url: "/PlaceholderImage.png", // Placeholder for bottom-left image
+      button1Text: "Our Solutions",
+      button1Link: "/services", // Example link
+      button2Text: "Start Today",
+      button2Link: "/contact", // Example link
+    },
+    {
+      id: '2',
+      heading: "Siemens LOGO! PLC online training",
+      paragraph: "Unlock your potential with our innovative Siemens LOGO! PLC online training. Developed in partnership with the Automation Works Training Facility, this course offers comprehensive, accessible learning for aspiring automation professionals.",
+      image1Url: "/PlaceholderImage.png", // TODO: Update image path if needed
+      image2Url: "/PlaceholderImage.png", // TODO: Update image path if needed
+      button1Text: "Learn More",
+      button1Link: "/community", // Updated link to community/training page
+      button2Text: "Contact Us",
+      button2Link: "/contact",
+    },
+    {
+      id: '3',
+      heading: "Full process Development and Design",
+      paragraph: "From concept to completion, Automation Works expertly handles all electrical and instrumentation installations, ensuring seamless integration and optimal performance for your full process development and design needs.",
+      image1Url: "/PlaceholderImage.png", // TODO: Update image path if needed
+      image2Url: "/PlaceholderImage.png", // TODO: Update image path if needed
+      button1Text: "View Portfolio",
+      button1Link: "/portfolio",
+      button2Text: "Request Quote",
+      button2Link: "/contact",
+    },
+    {
+      id: '4',
+      heading: "What if it was actually easy? Automation & Production Control",
+      paragraph: "What if automation and production control were actually easy? Automation Works makes it easy, simplifying complex processes for optimal efficiency.",
+      image1Url: "/PlaceholderImage.png", // TODO: Update image path if needed
+      image2Url: "/PlaceholderImage.png", // TODO: Update image path if needed
+      button1Text: "Our Services",
+      button1Link: "/services",
+      button2Text: "Get In Touch",
+      button2Link: "/contact",
+    },
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+  // Map data to SliderContent components
+  const slides = slidesData.map(slide => ({
+    id: slide.id,
+    content: <SliderContent {...slide} />
+  }));
+
+  return (
+  <>
+    <HeroSlider slides={slides} />
+    <AboutSection/>
+    <SocialProof/>
+    <ServiceSection/>
+    <CaseStudies/>
+    <WhyChooseUs/>
+    <WinterSchool/>
+    <TestimonialSection/>
+    <GetInTouch/>
+  
+  </>  
+);
 }
