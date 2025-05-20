@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "app/comps/Home/aboutSection.jsx", "app/terms-of-services"  ],
+, "app/comps/Home/aboutSection.jsx", "app/terms-of-services", "next.config.js"  ],
   "exclude": [
     "node_modules"
   ]
