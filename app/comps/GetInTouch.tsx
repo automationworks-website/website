@@ -1,15 +1,16 @@
 import Image from "next/image"
-import ContactForm from "./contactForm"
+import ContactForm from "./contactForm" // Assuming this component exists in the same directory or path is correct
 
 const GetInTouch = () => {
   return (
-    <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 my-10 lg:my-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 my-10 lg:my-16">
+      {/* Left Side: "Let's Get in Touch" Text and Arrow */}
       <div className="flex flex-col w-full">
         <div className="flex flex-row items-center gap-3 mb-2">
           <h2 className="text-5xl sm:text-7xl lg:text-6xl xl:text-[165px] font-bold uppercase leading-none">Let's</h2>
           <div className="flex justify-center items-center">
             <Image
-              src="/Arrow right-circle.png"
+              src="/Arrow right-circle.png" // Ensure this path is correct relative to your public folder
               height={160}
               width={160}
               alt="Light blue circle with an arrow pointing right"
@@ -24,15 +25,23 @@ const GetInTouch = () => {
           Touch
         </h2>
       </div>
+
+      {/* Right Side: Contact Form and Location Details */}
       <div>
         <div className="mb-8">
           <ContactForm />
         </div>
         <h3 className="mb-6 font-semibold text-xl sm:text-2xl lg:text-[28px]">Locations</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          {/* Johannesburg Office */}
           <div>
             <h4 className="font-semibold mb-2">Johannesburg Office</h4>
-            <p>Tel: 011 972 1316</p>
+            <p>
+              Tel:{" "}
+              <a href="tel:0119721316" className="text-blue-600 hover:underline">
+                011 972 1316
+              </a>
+            </p>
             <p>9 Wonderboom Street</p>
             <p>Glen Marais</p>
             <p>Kempton Park, South Africa</p>
@@ -42,9 +51,20 @@ const GetInTouch = () => {
               </a>
             </p>
           </div>
+
+          {/* Swellendam Office */}
           <div>
             <h4 className="font-semibold mb-2">Swellendam Office</h4>
-            <p>Tel: 028 514 2558 / 2587</p>
+            <p>
+              Tel:{" "}
+              <a href="tel:0285142558" className="text-blue-600 hover:underline">
+                028 514 2558
+              </a>{" "}
+              /{" "}
+              <a href="tel:0285142587" className="text-blue-600 hover:underline">
+                2587
+              </a>
+            </p>
             <p>Oaktree Business Park</p>
             <p>Buffeljagsrivier, 6742</p>
             <p>Western Cape, South Africa</p>
@@ -61,4 +81,3 @@ const GetInTouch = () => {
 }
 
 export default GetInTouch
-
