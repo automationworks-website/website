@@ -235,11 +235,11 @@ const FooterComp = () => {
             <p className="text-sm text-gray-500">© {new Date().getFullYear()} Automation Works. All rights reserved.</p>
             <div className="flex space-x-4">
                {/* Using placeholder icons based on image - update src if needed */}
-              <Link href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+              <Link href="https://www.facebook.com/AuWoS/" target="_blank" rel="noopener noreferrer">
                  {/* Assuming you have appropriate icons or use SVGs/icon library */}
                 <Image src="/Facebook.png" alt="Facebook" width={24} height={24} className="w-6 h-6" />
               </Link>
-              <Link href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+              <Link href="https://www.youtube.com/channel/UC4sXxXfdWbYV8uPvfNsmT_Q" target="_blank" rel="noopener noreferrer">
                 <Image src="/Youtube.png" alt="YouTube" width={24} height={24} className="w-6 h-6" />
               </Link>
             </div>
