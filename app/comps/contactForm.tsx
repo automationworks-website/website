@@ -1,17 +1,16 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowRight, Loader2 } from 'lucide-react' // Added Loader2 for loading state
+import { ArrowRight, Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { useState } from 'react' // Import useState
-import emailjs from '@emailjs/browser' // Import EmailJS
+import { useState } from 'react'
+import emailjs from '@emailjs/browser'
 
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-
 
 const formSchema = z.object({
   fullName: z.string().min(2, 'Name is required'),
@@ -42,35 +41,54 @@ export default function ContactForm() {
     setSubmitStatus('')
     setSubmitMessage('')
 
-    // These are the parameters your EmailJS template expects
-    // Ensure your template variables match these (e.g., {{from_name}}, {{reply_to}}, etc.)
     const templateParams = {
       from_name: values.fullName,
-      reply_to: values.email, // EmailJS often uses 'reply_to' for the sender's email
+      reply_to: values.email,
       phone: values.phone,
       message: values.message,
-      // You can add a 'to_name' if your template uses it, e.g., to_name: "Admin"
     }
 
-    try {
-      // If you haven't initialized EmailJS globally (e.g., in your _app.tsx or layout),
-      // you can initialize it here or pass the public key directly to send().
-      // emailjs.init(EMAILJS_PUBLIC_KEY); // Optional if passing public key to send()
+    // --- START: Retrieve and Validate Environment Variables ---
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
+    // This check ensures all three are actual strings before proceeding.
+    // If any are missing, it sets an error and exits.
+    if (!serviceId || !templateId || !publicKey) {
+      console.error("EmailJS environment variables are not set correctly. Please check your .env.local file and Netlify environment settings.");
+      setSubmitStatus('error');
+      setSubmitMessage('Configuration error: Unable to send email. Please contact support if this persists.');
+      setIsSubmitting(false);
+      return; // Exit the function if variables are missing
+    }
+    // --- END: Retrieve and Validate Environment Variables ---
+
+    try {
+      // By this point, TypeScript knows serviceId, templateId, and publicKey are strings
+      // because of the guard clause above.
       await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        serviceId,   // Now guaranteed to be a string
+        templateId,  // Now guaranteed to be a string
         templateParams,
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY 
+        publicKey    // Now guaranteed to be a string
       )
 
       setSubmitStatus('success')
       setSubmitMessage('Message sent successfully! We will get back to you soon.')
-      form.reset() // Reset form fields on success
+      form.reset()
     } catch (error) {
-      console.error('EmailJS Error:', error)
+      console.error('EmailJS Send Error:', error)
+      let errorMessage = 'Failed to send message. Please try again later.';
+      // Attempt to get more specific error text from EmailJS
+      if (typeof error === 'object' && error !== null && 'text' in error) {
+         errorMessage = `Failed to send message. Server responded: ${(error as { text: string }).text}.`;
+         console.error('EmailJS error details:', (error as { text: string }).text);
+      } else if (error instanceof Error) {
+        errorMessage = `Failed to send message: ${error.message}`;
+      }
       setSubmitStatus('error')
-      setSubmitMessage('Failed to send message. Please try again later or contact us directly.')
+      setSubmitMessage(errorMessage)
     } finally {
       setIsSubmitting(false)
     }
@@ -79,25 +97,25 @@ export default function ContactForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-4">
+        {/* FullName Field */}
         <FormField
           control={form.control}
           name="fullName"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="relative">
-                  <Input
-                    placeholder="FULL NAME *"
-                    {...field}
-                    className="border-0 border-b border-black rounded-none px-0 placeholder:text-black focus-visible:ring-0 focus-visible:border-black"
-                    disabled={isSubmitting}
-                  />
-                </div>
+                <Input
+                  placeholder="FULL NAME *"
+                  {...field}
+                  className="border-0 border-b border-black rounded-none px-0 placeholder:text-black focus-visible:ring-0 focus-visible:border-black"
+                  disabled={isSubmitting}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        {/* Email and Phone Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
@@ -105,15 +123,13 @@ export default function ContactForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <div className="relative">
-                    <Input
-                      placeholder="EMAIL *"
-                      type="email"
-                      {...field}
-                      className="border-0 border-b border-black rounded-none px-0 placeholder:text-black focus-visible:ring-0 focus-visible:border-black"
-                      disabled={isSubmitting}
-                    />
-                  </div>
+                  <Input
+                    placeholder="EMAIL *"
+                    type="email"
+                    {...field}
+                    className="border-0 border-b border-black rounded-none px-0 placeholder:text-black focus-visible:ring-0 focus-visible:border-black"
+                    disabled={isSubmitting}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -125,41 +141,39 @@ export default function ContactForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <div className="relative">
-                    <Input
-                      placeholder="PHONE *"
-                      type="tel"
-                      {...field}
-                      className="border-0 border-b border-black rounded-none px-0 placeholder:text-black focus-visible:ring-0 focus-visible:border-black"
-                      disabled={isSubmitting}
-                    />
-                  </div>
+                  <Input
+                    placeholder="PHONE *"
+                    type="tel"
+                    {...field}
+                    className="border-0 border-b border-black rounded-none px-0 placeholder:text-black focus-visible:ring-0 focus-visible:border-black"
+                    disabled={isSubmitting}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
+        {/* Message Field */}
         <FormField
           control={form.control}
           name="message"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="relative">
-                  <Textarea
-                    placeholder="MESSAGE *"
-                    {...field}
-                    className="border-0 border-b border-black rounded-none px-0 placeholder:text-black resize-none focus-visible:ring-0 focus-visible:border-black min-h-[100px]"
-                    disabled={isSubmitting}
-                  />
-                </div>
+                <Textarea
+                  placeholder="MESSAGE *"
+                  {...field}
+                  className="border-0 border-b border-black rounded-none px-0 placeholder:text-black resize-none focus-visible:ring-0 focus-visible:border-black min-h-[100px]"
+                  disabled={isSubmitting}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="flex justify-end items-center"> {/* Added items-center for vertical alignment */}
+        {/* Submit Button and Message */}
+        <div className="flex justify-end items-center">
           {submitMessage && (
             <p
               className={`mr-4 text-sm ${
