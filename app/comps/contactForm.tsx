@@ -12,12 +12,6 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 
-// --- START: EmailJS Configuration ---
-// Replace these with your actual EmailJS values
-const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'
-const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY'
-// --- END: EmailJS Configuration ---
 
 const formSchema = z.object({
   fullName: z.string().min(2, 'Name is required'),
@@ -64,10 +58,10 @@ export default function ContactForm() {
       // emailjs.init(EMAILJS_PUBLIC_KEY); // Optional if passing public key to send()
 
       await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
         templateParams,
-        EMAILJS_PUBLIC_KEY // Pass your public key here
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY 
       )
 
       setSubmitStatus('success')
